@@ -25,10 +25,16 @@ def solve_equation(a, b, c):
  elif D == 0:
   x = -b / (2 * a)
   return f"один корень: x = {x::.2f}"
-  return f"один корень: x = {x:.2f}"
+ else:
+  return "нет действительных корней"
  def main():
-  print("решение квадраного уравнения: a* x^2 + b * x + c =0")
-  print("решение квадраного уравнения: a* x ** 2 + b * x + c =0")
+  args = sys.argv[1:] #все аргументы после имени скрипта
+  #обработка --help и пустого запуска 
+  if len(args) == 0 or "--help" in args or args[0] == "":
+   show_help()
+   return
+#обработка команды solve 
+  if len(args) == 1:
 # простой вввод с базовой проверкой числа
 try:
   a = int(input("введите a: "))
