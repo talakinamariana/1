@@ -1,4 +1,12 @@
 #вывод справки 
+def show_help():
+ print("программа решает уравнение вида a*x^2 + b*x + c = 0")
+ print("как использовать")
+ print("python math.py         # показать српавку")
+ print("python math.py  --help # показать справку")
+ print("python math.py   solve # ввести коэффиценты с клавиатуры")
+ print("python math.py   solve -a 1 -b -3 -c 2 # решить с заданными числами")
+ print("числа джолжны быть целыми и быть не больше 10000 по модулю")
 def solve_equation(a, b, c):
 # если a = 0, это уже не квадратное уравнение 
  if abs(a) > 10000 or abs(b) > 10000 or abs(c) > 10000:
@@ -23,10 +31,11 @@ def solve_equation(a, b, c):
   print("решение квадраного уравнения: a* x ** 2 + b * x + c =0")
 # простой вввод с базовой проверкой числа
 try:
-  a = float(input("введите a: "))
-  b = float(input("введите b: "))
-  c = float(input("введите c: "))
+  a = int(input("введите a: "))
+  b = int(input("введите b: "))
+  c = int(input("введите c: "))
+# если нужно, чтобы считались не только целые, но и дробные числа, то нужно поменять int на float
 except ValueError:
- print("нужно вставить числа.") 
+ print("нужно вставить целые числа.") 
 result =  solve_equation(a, b, c)
 print(result)
