@@ -27,21 +27,59 @@ def solve_equation(a, b, c):
   return f"один корень: x = {x::.2f}"
  else:
   return "нет действительных корней"
- def main():
-  args = sys.argv[1:] #все аргументы после имени скрипта
-  #обработка --help и пустого запуска 
-  if len(args) == 0 or "--help" in args or args[0] == "":
-   show_help()
-   return
-#обработка команды solve 
-  if len(args) == 1:
-# простой вввод с базовой проверкой числа
-try:
-  a = int(input("введите a: "))
-  b = int(input("введите b: "))
-  c = int(input("введите c: "))
-# если нужно, чтобы считались не только целые, но и дробные числа, то нужно поменять int на float
-except ValueError:
- print("нужно вставить целые числа.") 
-result =  solve_equation(a, b, c)
-print(result)
+ def parse flags(args):
+ #разбирает аргументы вида -a 1 -b -3 -c -2. возвращает (a,b,c) или None
+  values = {}
+  i = 0
+ while i < len(args):
+   flag = args[i]
+   if flag in ("-a", "-b", "-c"):
+    if i+1 >= len(args):
+     print(f"ошибка: после {flag} должно быть число")
+     return None
+    try:
+     values[flag] = int(args[i+1])
+    except ValueError:
+     print(f"ошибка: {flag} должно быть целым числом")
+     return None
+    i+=2
+    else:
+            print(f"Неизвестный аргумент: {flag}")
+            return None
+    if not all(k in values for k in ("-a", "-b", "-c")):
+        print("Ошибка: нужны все три параметра -a, -b, -c")
+        return None
+    return values["-a"], values["-b"], values["-c"]
+def input_from_keyboard():
+    try:
+        a = int(input("Введите a: "))
+        b = int(input("Введите b: "))
+        c = int(input("Введите c: "))
+        return a, b, c
+    except ValueError:
+        print("Нужно ввести целые числа.")
+        return None
+def main():
+    args = sys.argv[1:]
+    # Без аргументов или --help — справка
+    if not args or args[0] in ("--help", "-h", "help"):
+        show_help()
+        return
+    if args[0] != "solve":
+        print(f"Неизвестная команда: {args[0]}")
+        show_help()
+        return
+    # solve без флагов — ввод с клавиатуры
+    if len(args) == 1:
+        coefs = input_from_keyboard()
+        if coefs is None:
+            return
+        a, b, c = coefs
+    else:
+        coefs = parse_flags(args[1:])
+        if coefs is None:
+            return
+        a, b, c = coefs
+    print(solve_equation(a, b, c))
+if __name__ == "__main__":
+    main()
